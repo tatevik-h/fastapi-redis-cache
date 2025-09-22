@@ -7,3 +7,6 @@ class PayloadCreate(BaseModel):
 
 class PayloadRead(BaseModel):
     output: str
+
+class PayloadGet(BaseModel):
+    id: int
