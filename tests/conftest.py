@@ -4,10 +4,10 @@ from httpx import AsyncClient
 from unittest.mock import AsyncMock, patch
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
 from src.main import app
 from src.db.db import get_db
-
 
 @pytest.fixture(autouse=True)
 def mock_cache():
@@ -24,14 +24,12 @@ async def session():
     engine = create_async_engine(DATABASE_URL, echo=False)
     async with engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
-    async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     async with async_session() as s:
         yield s
 
-
 @pytest_asyncio.fixture
 async def client(session: AsyncSession):
-    # Override FastAPI dependency
     app.dependency_overrides[get_db] = lambda: session
     async with AsyncClient(app=app, base_url="http://test") as ac:
         yield ac
