@@ -10,6 +10,6 @@ psycopg2-binary==2.8.6
 aioredis
 pydantic>=1.8.0,<2.0.0
 pytest
-pytest-asyncio
 requests
-httpx>=0.24.0
+httpx>=0.24.0,<1.0
+pytest-asyncio>=0.20.3
