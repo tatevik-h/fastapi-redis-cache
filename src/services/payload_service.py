@@ -24,6 +24,7 @@ async def generate_payload(list_1, list_2, session: AsyncSession):
     output = ",".join(val for pair in zip(transformed_1, transformed_2) for val in pair)
 
     payload = Payload(list_1=str(list_1), list_2=str(list_2), output=output)
+    payload = await repo.add(payload)
 
     await set_cache(key, {"output": payload.output})
 
