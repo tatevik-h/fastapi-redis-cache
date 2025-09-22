@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/usr/share/postgres/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+    driver: local
