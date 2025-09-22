@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str = "host.docker.internal:5432"
     POSTGRES_URL: Optional[str]
 
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: int = 6379
+    REDIS_URL: str = "redis://redis:6379"
+
     FEEDBACK_DEFAULT_PAGE_SIZE: int = 10
 
     @validator("POSTGRES_URL", pre=True, always=True)
