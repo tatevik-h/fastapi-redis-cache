@@ -11,8 +11,8 @@ async def client():
 
 @pytest.fixture(autouse=True)
 def mock_cache():
-    with patch("src.services.cache_service.get_cache", new_callable=AsyncMock) as get_mock, \
-         patch("src.services.cache_service.set_cache", new_callable=AsyncMock) as set_mock:
+    with patch("src.services.payload_service.get_cache", new_callable=AsyncMock) as get_mock, \
+         patch("src.services.payload_service.set_cache", new_callable=AsyncMock) as set_mock:
         get_mock.return_value = None
         set_mock.return_value = None
         yield
