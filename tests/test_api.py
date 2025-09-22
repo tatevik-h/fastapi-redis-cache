@@ -1,6 +1,6 @@
 import pytest
 
-@pytest.mark.asincio
+@pytest.mark.asyncio
 async def test_create_and_get_payload(client):
     payload = {
         "list_1": ["foo", "bar"],
