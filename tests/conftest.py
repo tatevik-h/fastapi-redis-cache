@@ -2,12 +2,11 @@ import pytest
 import pytest_asyncio
 from httpx import AsyncClient
 from unittest.mock import AsyncMock, patch
+from sqlmodel import SQLModel
+from sqlmodel.ext.asyncio.session import AsyncSession, create_async_engine, async_sessionmaker
 from src.main import app
+from src.db.db import get_db  # your dependency
 
-@pytest_asyncio.fixture
-async def client():
-    async with AsyncClient(app=app, base_url="http://test") as ac:
-        yield ac
 
 @pytest.fixture(autouse=True)
 def mock_cache():
@@ -16,3 +15,22 @@ def mock_cache():
         get_mock.return_value = None
         set_mock.return_value = None
         yield
+
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+
+@pytest_asyncio.fixture
+async def session():
+    engine = create_async_engine(DATABASE_URL, echo=False)
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+    async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async with async_session() as s:
+        yield s
+
+
+@pytest_asyncio.fixture
+async def client(session: AsyncSession):
+    # Override FastAPI dependency
+    app.dependency_overrides[get_db] = lambda: session
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac
