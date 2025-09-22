@@ -1,7 +1,5 @@
 import asyncio
 
-from lazy_object_proxy.utils import await_
-
 
 async def transform_string(s: str) -> str:
     """
