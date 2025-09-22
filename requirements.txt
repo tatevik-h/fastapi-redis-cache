@@ -11,3 +11,4 @@ aioredis
 pydantic>=1.8.0,<2.0.0
 pytest
 requests
+httpx
