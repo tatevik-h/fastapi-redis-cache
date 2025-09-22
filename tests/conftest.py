@@ -3,9 +3,10 @@ import pytest_asyncio
 from httpx import AsyncClient
 from unittest.mock import AsyncMock, patch
 from sqlmodel import SQLModel
-from sqlmodel.ext.asyncio.session import AsyncSession, create_async_engine, async_sessionmaker
+from sqlmodel.ext.asyncio.session import AsyncSession,
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from src.main import app
-from src.db.db import get_db  # your dependency
+from src.db.db import get_db
 
 
 @pytest.fixture(autouse=True)
