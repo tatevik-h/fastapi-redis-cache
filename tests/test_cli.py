@@ -4,8 +4,6 @@ import sys
 import pytest
 from pathlib import Path
 
-from openpyxl.styles.builtins import output
-
 CLI = ["python", "cli/cache_cli.py"]
 
 
